@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
 import { Box, Flex } from "@chakra-ui/react";
+import { apiKey } from "../authenKey";
 import { Dropdown } from "./Dropdown";
 import { Temperature } from "./Temperature";
-import { apiKey } from "../authenKey";
-
-// https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+import { Card } from "./Card";
 
 export const ContainerBox: React.FC = () => {
   const [location, setLocation] = useState("Auckland, NZ");
@@ -51,13 +51,33 @@ export const ContainerBox: React.FC = () => {
       display="flex"
       alignItems="center"
       justifyContent="center"
+      flexDirection="column"
     >
-      <Flex p="6" flexDirection="column">
+      <Flex p="5" flexDirection="column">
         <Dropdown city={location} setCity={setLocation} />
         <Temperature
           value={(parseFloat(weather.temp) - 273.15).toFixed(1)}
           isLoading
         />
+      </Flex>
+      <Flex>
+        <Card
+          isLoading
+          dataType="sunrise"
+          value={format(
+            new Date(
+              Number(
+                weather.sunrise +
+                  weather.tzone +
+                  new Date().getTimezoneOffset() * 60
+              ) * 1000
+            ),
+            "HH:mm",
+            {}
+          )}
+        />
+        <Card isLoading dataType="wind" value={weather.wind} />
+        <Card isLoading dataType="humid" value={weather.humid} />
       </Flex>
     </Box>
   );
