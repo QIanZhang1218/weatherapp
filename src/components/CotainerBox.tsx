@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex } from "@chakra-ui/react";
 import { Dropdown } from "./Dropdown";
 import { Temperature } from "./Temperature";
+import { apiKey } from "../authenKey";
 
-const apiKey = "d3e47861daf225c45ca331bef012b46d";
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
 export const ContainerBox: React.FC = () => {

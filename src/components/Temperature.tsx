@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Icon } from "@chakra-ui/react";
 import { RiCelsiusFill } from "react-icons/ri";
 interface Props {
   value: string;
@@ -14,10 +14,15 @@ export const Temperature: React.FC<Props> = (value, isLoading) => {
         isLoaded={value.isLoading}
       > */}
       <Flex flexDirection="row">
-        <Text fontSize="7rem" color="">
+        <Text fontSize="6rem" color="#313E57">
           {value.value}
         </Text>
-        <RiCelsiusFill className={"temp-icon"} />
+        <Icon
+          as={RiCelsiusFill}
+          fontSize="2rem"
+          marginTop={5}
+          color="#313E57"
+        />
       </Flex>
       {/* </Skeleton> */}
     </>
