@@ -8,6 +8,7 @@ import { Card } from "./Card";
 
 export const ContainerBox: React.FC = () => {
   const [location, setLocation] = useState("Auckland, NZ");
+  const [refresh, setRefresh] = useState(false);
   const [weather, setWeather] = useState({
     temp: "",
     sunrise: "",
@@ -22,6 +23,11 @@ export const ContainerBox: React.FC = () => {
     );
     return await response.json();
   };
+  const timeout = () =>
+    setTimeout(() => {
+      setRefresh(!refresh);
+    }, 60000);
+
   useEffect(() => {
     setWeather({
       humid: "",
@@ -31,6 +37,7 @@ export const ContainerBox: React.FC = () => {
       wind: "",
       isLoading: true,
     });
+
     getWeather().then((res) => {
       setWeather({
         temp: res.main.temp,
@@ -41,7 +48,10 @@ export const ContainerBox: React.FC = () => {
         isLoading: false,
       });
     });
-  }, [location]);
+    timeout();
+    return () => clearTimeout(timeout());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location, refresh]);
   return (
     <Box
       borderWidth="1rem"
@@ -57,12 +67,12 @@ export const ContainerBox: React.FC = () => {
         <Dropdown city={location} setCity={setLocation} />
         <Temperature
           value={(parseFloat(weather.temp) - 273.15).toFixed(1)}
-          isLoading
+          isLoading={weather.isLoading}
         />
       </Flex>
       <Flex>
         <Card
-          isLoading
+          isLoading={weather.isLoading}
           dataType="sunrise"
           value={format(
             new Date(
@@ -76,8 +86,16 @@ export const ContainerBox: React.FC = () => {
             {}
           )}
         />
-        <Card isLoading dataType="wind" value={weather.wind} />
-        <Card isLoading dataType="humid" value={weather.humid} />
+        <Card
+          isLoading={weather.isLoading}
+          dataType="wind"
+          value={`${weather.wind}m/s`}
+        />
+        <Card
+          isLoading={weather.isLoading}
+          dataType="humid"
+          value={weather.humid + "%"}
+        />
       </Flex>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, Text, Icon } from "@chakra-ui/react";
+import { Flex, Text, Icon, Skeleton } from "@chakra-ui/react";
 import { RiCelsiusFill } from "react-icons/ri";
 interface Props {
   value: string;
@@ -7,12 +7,7 @@ interface Props {
 }
 export const Temperature: React.FC<Props> = (value, isLoading) => {
   return (
-    <>
-      {/* <Skeleton
-        startColor="pink.500"
-        endColor="orange.500"
-        isLoaded={value.isLoading}
-      > */}
+    <Skeleton isLoaded={!value.isLoading}>
       <Flex flexDirection="row">
         <Text fontSize="6rem" color="#313E57">
           {value.value}
@@ -24,7 +19,6 @@ export const Temperature: React.FC<Props> = (value, isLoading) => {
           color="#313E57"
         />
       </Flex>
-      {/* </Skeleton> */}
-    </>
+    </Skeleton>
   );
 };
